@@ -7,20 +7,24 @@ module.exports = {
     async execute(interaction) {
         try {
             const guild = interaction.guild;
-            const embed = {
-                title: `${guild.name} Info`,
+
+            const serverInfo = {
+                color: 0x00ff00,
+                title: `Information about ${guild.name}`,
                 fields: [
-                    { name: 'Server ID', value: guild.id, inline: true },
-                    { name: 'Members', value: `${guild.memberCount}`, inline: true },
-                    { name: 'Region', value: guild.preferredLocale, inline: true },
-                    { name: 'Created At', value: guild.createdAt.toLocaleDateString(), inline: true }
+                    { name: 'Server Name', value: guild.name, inline: true },
+                    { name: 'Total Members', value: `${guild.memberCount}`, inline: true },
+                    { name: 'Owner', value: `${guild.owner.user.tag}`, inline: true },
+                    { name: 'Creation Date', value: guild.createdAt.toDateString(), inline: true },
+                    { name: 'Region', value: guild.region, inline: true },
                 ],
-                color: 0x00ff00
+                thumbnail: { url: guild.iconURL({ dynamic: true }) },
             };
-            await interaction.reply({ embeds: [embed] });
+
+            await interaction.reply({ embeds: [serverInfo] });
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'An error occurred while fetching the server information.', ephemeral: true });
+            await interaction.reply({ content: 'An error occurred while fetching the server info.', ephemeral: true });
         }
     }
 };
