@@ -3,23 +3,23 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('clear')
-        .setDescription('Supprimer un certain nombre de messages')
+        .setDescription('Delete a certain number of messages')
         .addIntegerOption(option =>
-            option.setName('nombre')
-                .setDescription('Le nombre de messages à supprimer')
+            option.setName('number')
+                .setDescription('The number of messages to delete')
                 .setRequired(true)
                 .setMinValue(1)
                 .setMaxValue(100)
         ),
     async execute(interaction) {
         try {
-            const number = interaction.options.getInteger('nombre');
+            const number = interaction.options.getInteger('number');
             const messages = await interaction.channel.messages.fetch({ limit: number });
             await interaction.channel.bulkDelete(messages);
-            await interaction.reply({ content: `J'ai supprimé ${number} messages.`, ephemeral: true });
+            await interaction.reply({ content: `I have deleted ${number} messages.`, ephemeral: true });
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'Une erreur est survenue lors de la suppression des messages.', ephemeral: true });
+            await interaction.reply({ content: 'An error occurred while deleting messages.', ephemeral: true });
         }
     }
 };

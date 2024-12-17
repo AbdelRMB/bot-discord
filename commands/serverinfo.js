@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('serverinfo')
-        .setDescription('Affiche des informations sur le serveur'),
+        .setDescription('Displays information about the server'),
     async execute(interaction) {
         try {
             const guild = interaction.guild;
@@ -20,7 +20,7 @@ module.exports = {
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'Une erreur est survenue.', ephemeral: true });
+            await interaction.reply({ content: 'An error occurred while fetching the server information.', ephemeral: true });
         }
     }
 };

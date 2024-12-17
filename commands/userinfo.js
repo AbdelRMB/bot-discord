@@ -3,10 +3,10 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('userinfo')
-        .setDescription('Affiche des informations sur un utilisateur')
+        .setDescription('Displays information about a user')
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('L\'utilisateur')
+                .setDescription('The user')
                 .setRequired(false)
         ),
     async execute(interaction) {
@@ -26,7 +26,7 @@ module.exports = {
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'Une erreur est survenue.', ephemeral: true });
+            await interaction.reply({ content: 'An error occurred while fetching the user information.', ephemeral: true });
         }
     }
 };

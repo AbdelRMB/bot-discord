@@ -3,15 +3,15 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('announce')
-        .setDescription('Envoie une annonce dans un canal spécifié')
+        .setDescription('Send an announcement to a specified channel')
         .addChannelOption(option =>
             option.setName('channel')
-                .setDescription('Le canal où envoyer l\'annonce')
+                .setDescription('The channel to send the announcement to')
                 .setRequired(true)
                 .addChannelTypes(0, 5))  // Text channels only
         .addStringOption(option =>
             option.setName('message')
-                .setDescription('Le message de l\'annonce')
+                .setDescription('The announcement message')
                 .setRequired(true)
         ),
     async execute(interaction) {
@@ -19,10 +19,10 @@ module.exports = {
             const channel = interaction.options.getChannel('channel');
             const message = interaction.options.getString('message');
             await channel.send(message);
-            await interaction.reply({ content: `Annonce envoyée dans ${channel.name}.`, ephemeral: true });
+            await interaction.reply({ content: `Announcement sent to ${channel.name}.`, ephemeral: true });
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'Une erreur est survenue lors de l\'envoi de l\'annonce.', ephemeral: true });
+            await interaction.reply({ content: 'An error occurred while sending the announcement.', ephemeral: true });
         }
     }
 };
