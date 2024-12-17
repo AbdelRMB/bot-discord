@@ -13,7 +13,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command);
-    console.log(`Commande ${command.data.name} chargée.`);
+    console.log(`Command ${command.data.name} ready.`);
 }
 
 client.once('ready', () => {
