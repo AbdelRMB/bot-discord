@@ -7,6 +7,7 @@ module.exports = {
     async execute(interaction) {
         try {
             const guild = interaction.guild;
+            const owner = await guild.fetchOwner(); // Récupère le propriétaire du serveur
 
             const serverInfo = {
                 color: 0x00ff00,
@@ -14,9 +15,8 @@ module.exports = {
                 fields: [
                     { name: 'Server Name', value: guild.name, inline: true },
                     { name: 'Total Members', value: `${guild.memberCount}`, inline: true },
-                    { name: 'Owner', value: `${guild.owner.user.tag}`, inline: true },
+                    { name: 'Owner', value: `${owner.user.tag}`, inline: true },
                     { name: 'Creation Date', value: guild.createdAt.toDateString(), inline: true },
-                    { name: 'Region', value: guild.region, inline: true },
                 ],
                 thumbnail: { url: guild.iconURL({ dynamic: true }) },
             };
