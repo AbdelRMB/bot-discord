@@ -3,5 +3,5 @@
     "guildId": "your-guild-id",
     "token": "your-bot-token",
     "welcomeChannelId": "your-welcome-channel-id",
-    "logJoinChannelId": "your-log-join-channel-id"
+    "logChannelId": "your-log-join-channel-id"
 }

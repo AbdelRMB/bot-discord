@@ -81,7 +81,7 @@ client.on('guildMemberAdd', async member => {
         }
 
         // Logs message
-        const logChannel = member.guild.channels.cache.get(config.logJoinChannelId);
+        const logChannel = member.guild.channels.cache.get(config.logChannelId);
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
                 .setColor(0x0000FF)
@@ -99,6 +99,30 @@ client.on('guildMemberAdd', async member => {
         }
     } catch (error) {
         console.error('Error handling guildMemberAdd event:', error);
+    }
+});
+
+client.on('guildMemberRemove', async member => {
+    try {
+        // Logs message
+        const logChannel = member.guild.channels.cache.get(config.logChannelId);
+        if (logChannel) {
+            const logEmbed = new EmbedBuilder()
+                .setColor(0xFF0000)
+                .setTitle('📤 Membre parti')
+                .setDescription(`**Utilisateur :** ${member.user.tag} (${member.id}) a quitté le serveur.`)
+                .setThumbnail(member.user.displayAvatarURL())
+                .addFields(
+                    { name: 'Créé le', value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:F>`, inline: true },
+                    { name: 'Parti le', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: true }
+                )
+                .setFooter({ text: `ID : ${member.id}` })
+                .setTimestamp();
+
+            await logChannel.send({ embeds: [logEmbed] });
+        }
+    } catch (error) {
+        console.error('Error handling guildMemberRemove event:', error);
     }
 });
 
