@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Kick a member from the server.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user to kick')

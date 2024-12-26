@@ -1,12 +1,13 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rules')
-        .setDescription('Affiche un embed avec les règles du serveur'),
+        .setDescription('Affiche un embed avec les règles du serveur')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         const rulesEmbed = {
-            color: 0x3498db, 
+            color: 0x3498db,
             title: 'Règles du serveur',
             description: "Bienvenue sur notre serveur ! Voici les règles à respecter pour maintenir une bonne ambiance :",
             fields: [

@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reglement-service')
-        .setDescription('Affiche un embed avec les modalités et règles sur les services proposés'),
+        .setDescription('Affiche un embed avec les modalités et règles sur les services proposés')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         const reglementServiceEmbed = {
             color: 0xff5722, // Couleur principale (orange)

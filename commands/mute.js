@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('mute')
         .setDescription('Mute a user in the server')
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user to mute')
@@ -33,7 +34,7 @@ module.exports = {
             if (duration) {
                 setTimeout(() => {
                     member.roles.remove(muteRole);
-                }, duration * 60 * 1000); 
+                }, duration * 60 * 1000);
             }
 
             await interaction.reply({ content: `${user.tag} has been muted.` });

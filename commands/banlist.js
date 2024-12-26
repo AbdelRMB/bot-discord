@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('banlist')
-        .setDescription('Displays the list of banned users in the server'),
+        .setDescription('Displays the list of banned users in the server')
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     async execute(interaction) {
         try {
             const bans = await interaction.guild.bans.fetch();

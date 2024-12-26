@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('userinfo')
         .setDescription('Displays information about a user')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user')

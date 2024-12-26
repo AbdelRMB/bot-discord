@@ -1,12 +1,13 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('service')
-        .setDescription('Affiche un embed avec les services proposés'),
+        .setDescription('Affiche un embed avec les services proposés')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         const servicesEmbed = {
-            color: 0x4caf50, // Couleur principale (vert)
+            color: 0x4caf50,
             title: '🌟 Services proposés',
             description: "Voici une liste des services que je propose :",
             fields: [

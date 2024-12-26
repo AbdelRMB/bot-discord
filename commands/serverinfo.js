@@ -1,13 +1,14 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('serverinfo')
-        .setDescription('Displays information about the server'),
+        .setDescription('Displays information about the server')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         try {
             const guild = interaction.guild;
-            const owner = await guild.fetchOwner(); // Récupère le propriétaire du serveur
+            const owner = await guild.fetchOwner(); 
 
             const serverInfo = {
                 color: 0x00ff00,
