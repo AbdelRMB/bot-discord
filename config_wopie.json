@@ -1,5 +1,6 @@
 {
-    "token": "YOUR_BOT_TOKEN",
-    "clientId": "YOUR_BOT_CLIENT_ID",
-    "guildId": "YOUR_GUILD_ID"
+    "clientId": "your-client-id",
+    "guildId": "your-guild-id",
+    "token": "your-bot-token",
+    "welcomeChannelId": "your-welcome-channel-id"
 }
