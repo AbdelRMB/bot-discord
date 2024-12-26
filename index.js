@@ -46,6 +46,13 @@ const rest = new REST({ version: '10' }).setToken(config.token);
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
+
+    client.user.setPresence({
+        activities: [{ name: 'Maintenance', type: 'WATCHING' }],
+        status: 'idle',
+    });
+
+    console.log(`Logged in as ${client.user.tag}`);
 });
 
 client.on('interactionCreate', async interaction => {
