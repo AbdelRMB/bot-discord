@@ -3,70 +3,48 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rules')
-        .setDescription('Creates an interactive set of rules.'),
+        .setDescription('Affiche un embed avec les règles du serveur'),
     async execute(interaction) {
-        try {
-            const messagesToDelete = [];
-
-            const initialMessage = await interaction.reply({ content: 'What is the title of the rules?', fetchReply: true });
-            messagesToDelete.push(initialMessage);
-
-            const filter = (response) => response.author.id === interaction.user.id;
-
-            const titleMessage = await interaction.channel.awaitMessages({ filter, max: 1, time: 60000 });
-            if (!titleMessage.size) {
-                return interaction.followUp('Time expired. Command cancelled.');
-            }
-
-            const title = titleMessage.first();
-            messagesToDelete.push(title);
-
-            const followUpMessage = await interaction.followUp({ content: `The title is "${title.content}". How many rules are there? (Please respond with a number)`, fetchReply: true });
-            messagesToDelete.push(followUpMessage);
-
-            const ruleCountMessage = await interaction.channel.awaitMessages({ filter, max: 1, time: 60000 });
-
-            if (!ruleCountMessage.size) {
-                return interaction.followUp('Time expired. Command cancelled.');
-            }
-
-            const ruleCount = parseInt(ruleCountMessage.first().content);
-            messagesToDelete.push(ruleCountMessage.first());
-
-            if (isNaN(ruleCount) || ruleCount <= 0) {
-                return interaction.followUp('The number of rules must be a positive number. Command cancelled.');
-            }
-
-            const rules = [];
-
-            for (let i = 1; i <= ruleCount; i++) {
-                const rulePrompt = await interaction.followUp({ content: `What is rule ${i}?`, fetchReply: true });
-                messagesToDelete.push(rulePrompt);
-
-                const ruleMessage = await interaction.channel.awaitMessages({ filter, max: 1, time: 60000 });
-
-                if (!ruleMessage.size) {
-                    return interaction.followUp('Time expired while collecting rules. Command cancelled.');
+        const rulesEmbed = {
+            color: 0x3498db, 
+            title: 'Règles du serveur',
+            description: "Bienvenue sur notre serveur ! Voici les règles à respecter pour maintenir une bonne ambiance :",
+            fields: [
+                {
+                    name: '1. Respect',
+                    value: "Soyez respectueux envers les autres membres. Aucune forme de harcèlement, d'insulte ou de comportement toxique ne sera tolérée.",
+                },
+                {
+                    name: '2. Pas de spam',
+                    value: "Évitez de spammer dans les salons textuels ou vocaux. Cela inclut les messages répétitifs et les mentions abusives.",
+                },
+                {
+                    name: '3. Contenus inappropriés',
+                    value: "Ne partagez pas de contenus NSFW, offensants ou illégaux sous quelque forme que ce soit.",
+                },
+                {
+                    name: '4. Suivez les consignes des modérateurs',
+                    value: "Les modérateurs sont là pour assurer le bon fonctionnement du serveur. Respectez leurs décisions.",
+                },
+                {
+                    name: '5. Canaux dédiés',
+                    value: "Utilisez les salons appropriés pour vos messages. Par exemple, les discussions générales vont dans le canal général, les questions techniques dans le canal dédié, etc.",
+                },
+                {
+                    name: '6. Pas de publicité',
+                    value: "La publicité pour d'autres serveurs ou services est interdite sans l'accord préalable d'un administrateur.",
+                },
+                {
+                    name: 'Règles officielles de Discord',
+                    value: "En rejoignant ce serveur, vous acceptez également de respecter les [Conditions d'utilisation](https://discord.com/terms) et les [Règles communautaires](https://discord.com/guidelines) de Discord. Tout manquement peut entraîner une action de modération."
                 }
+            ],
+            footer: {
+                text: "Merci de respecter ces règles pour maintenir une communauté agréable pour tous !",
+            },
+            timestamp: new Date(),
+        };
 
-                rules.push(ruleMessage.first().content);
-                messagesToDelete.push(ruleMessage.first());
-            }
-
-            const embed = {
-                color: 0x00ff00,
-                title: title.content,
-                description: rules.map((rule, index) => `**Rule ${index + 1}:** ${rule}`).join('\n'),
-            };
-
-            for (const msg of messagesToDelete) {
-                await msg.delete();
-            }
-
-            await interaction.followUp({ embeds: [embed] });
-        } catch (error) {
-            console.error('Error executing the /rules command:', error);
-            await interaction.followUp({ content: 'An error occurred while creating the rules.', ephemeral: true });
-        }
+        await interaction.reply({ embeds: [rulesEmbed] });
     },
 };
