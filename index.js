@@ -51,8 +51,6 @@ client.once('ready', () => {
         activities: [{ name: 'Maintenance', type: 'WATCHING' }],
         status: 'idle',
     });
-
-    console.log(`Logged in as ${client.user.tag}`);
 });
 
 client.on('interactionCreate', async interaction => {
