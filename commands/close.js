@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
+const config = require('../config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,12 +18,10 @@ module.exports = {
                 return;
             }
 
-            const logChannel = interaction.guild.channels.cache.find(
-                c => c.name === 'logs' && c.type === ChannelType.GuildText
-            );
+            const logChannel = message.guild.channels.cache.get(config.logChannelId);
 
             if (logChannel) {
-                await logChannel.send(`Le salon ${channel.name} va être supprimé par ${interaction.user.tag}.`);
+                await logChannel.send(`Le salon ${channel.name} a été supprimé par ${interaction.user.tag}.`);
             }
 
             await interaction.reply({

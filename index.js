@@ -82,7 +82,7 @@ client.on('guildMemberAdd', async member => {
         }
 
         // Logs message
-        const logChannel = member.guild.channels.cache.get(config.logJoinChannelId);
+        const logChannel = member.guild.channels.cache.get(config.logJoinLeaveChannelId);
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
                 .setColor(0x0000FF)
@@ -106,7 +106,7 @@ client.on('guildMemberAdd', async member => {
 client.on('guildMemberRemove', async member => {
     try {
         // Logs message
-        const logChannel = member.guild.channels.cache.get(config.logJoinChannelId);
+        const logChannel = member.guild.channels.cache.get(config.logJoinLeaveChannelId);
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
                 .setColor(0xFF0000)
