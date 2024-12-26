@@ -66,20 +66,39 @@ client.on('interactionCreate', async interaction => {
 
 client.on('guildMemberAdd', async member => {
     try {
+        // Welcome message
         const welcomeChannel = member.guild.channels.cache.get(config.welcomeChannelId);
-        if (!welcomeChannel) return;
+        if (welcomeChannel) {
+            const welcomeEmbed = new EmbedBuilder()
+                .setColor(0x00FF00)
+                .setTitle('🎉 Bienvenue sur le serveur !')
+                .setDescription(`Bienvenue ${member.user} ! Nous sommes ravis de t'avoir parmi nous. Pense à consulter les règles et amuse-toi bien !`)
+                .setThumbnail(member.user.displayAvatarURL())
+                .setFooter({ text: `Membre #${member.guild.memberCount}` })
+                .setTimestamp();
 
-        const welcomeEmbed = new EmbedBuilder()
-            .setColor(0x00FF00)
-            .setTitle('🎉 Bienvenue sur le serveur !')
-            .setDescription(`Bienvenue ${member.user} ! Nous sommes ravis de t'avoir parmi nous. Pense à consulter les règles et amuse-toi bien !`)
-            .setThumbnail(member.user.displayAvatarURL())
-            .setFooter({ text: `Membre #${member.guild.memberCount}` })
-            .setTimestamp();
+            await welcomeChannel.send({ embeds: [welcomeEmbed] });
+        }
 
-        await welcomeChannel.send({ embeds: [welcomeEmbed] });
+        // Logs message
+        const logChannel = member.guild.channels.cache.get(config.logJoinChannelId);
+        if (logChannel) {
+            const logEmbed = new EmbedBuilder()
+                .setColor(0x0000FF)
+                .setTitle('📥 Nouveau membre !')
+                .setDescription(`**Utilisateur :** ${member.user.tag} (${member.id})`)
+                .setThumbnail(member.user.displayAvatarURL())
+                .addFields(
+                    { name: 'Créé le', value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:F>`, inline: true },
+                    { name: 'Rejoint le', value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:F>`, inline: true }
+                )
+                .setFooter({ text: `ID : ${member.id}` })
+                .setTimestamp();
+
+            await logChannel.send({ embeds: [logEmbed] });
+        }
     } catch (error) {
-        console.error('Error sending welcome message:', error);
+        console.error('Error handling guildMemberAdd event:', error);
     }
 });
 

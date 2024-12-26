@@ -2,5 +2,6 @@
     "clientId": "your-client-id",
     "guildId": "your-guild-id",
     "token": "your-bot-token",
-    "welcomeChannelId": "your-welcome-channel-id"
+    "welcomeChannelId": "your-welcome-channel-id",
+    "logJoinChannelId": "your-log-join-channel-id"
 }
