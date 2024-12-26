@@ -8,7 +8,8 @@ const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent
     ]
 });
 
@@ -81,7 +82,7 @@ client.on('guildMemberAdd', async member => {
         }
 
         // Logs message
-        const logChannel = member.guild.channels.cache.get(config.logChannelId);
+        const logChannel = member.guild.channels.cache.get(config.logJoinChannelId);
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
                 .setColor(0x0000FF)
@@ -105,7 +106,7 @@ client.on('guildMemberAdd', async member => {
 client.on('guildMemberRemove', async member => {
     try {
         // Logs message
-        const logChannel = member.guild.channels.cache.get(config.logChannelId);
+        const logChannel = member.guild.channels.cache.get(config.logJoinChannelId);
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
                 .setColor(0xFF0000)
@@ -123,6 +124,29 @@ client.on('guildMemberRemove', async member => {
         }
     } catch (error) {
         console.error('Error handling guildMemberRemove event:', error);
+    }
+});
+
+client.on('messageDelete', async message => {
+    try {
+        const logMessageChannel = message.guild.channels.cache.get(config.logMessageChannelId);
+        if (!logMessageChannel) return;
+
+        const logEmbed = new EmbedBuilder()
+            .setColor(0xFFA500)
+            .setTitle('🗑️ Message supprimé')
+            .setDescription(`Un message a été supprimé dans <#${message.channel.id}>`)
+            .addFields(
+                { name: 'Auteur', value: `${message.author.tag} (${message.author.id})`, inline: true },
+                { name: 'Contenu', value: message.content || '*(Message non disponible ou vide)*', inline: false },
+                { name: 'Salon', value: `<#${message.channel.id}>`, inline: true }
+            )
+            .setFooter({ text: `ID Message : ${message.id}` })
+            .setTimestamp();
+
+        await logMessageChannel.send({ embeds: [logEmbed] });
+    } catch (error) {
+        console.error('Error logging deleted message:', error);
     }
 });
 
