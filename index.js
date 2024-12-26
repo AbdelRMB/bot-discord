@@ -48,7 +48,13 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 
     client.user.setPresence({
-        activities: [{ name: 'Maintenance', type: 'WATCHING' }],
+        activities: [
+            {
+                name: "Maintenance",
+                type: 0,
+                state: client.user.tag,
+            }
+        ],
         status: 'idle',
     });
 });
