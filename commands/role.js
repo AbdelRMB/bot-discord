@@ -17,7 +17,6 @@ module.exports = {
                     '🎨 - Graphiste'
                 );
 
-            // Créer les boutons
             const buttons = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
