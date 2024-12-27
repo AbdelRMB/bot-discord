@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('role')
         .setDescription('Créer un message pour les rôles avec des boutons')
-        .setDefaultPermission(PermissionFlagsBits.Administrator),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         try {
             const roleEmbed = new EmbedBuilder()
