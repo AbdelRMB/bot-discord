@@ -1,10 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 const config = require('../config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('role')
-        .setDescription('Créer un message pour les rôles avec des boutons'),
+        .setDescription('Créer un message pour les rôles avec des boutons')
+        .setDefaultPermission(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         try {
             const roleEmbed = new EmbedBuilder()
