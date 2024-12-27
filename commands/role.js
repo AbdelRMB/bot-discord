@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,11 +24,12 @@ module.exports = {
                 messageId: message.id,
                 roles: {
                     '🛠️': 'Développeur',
-                    '🎨': 'Graphiste'
-                }
+                    '🎨': 'Graphiste',
+                },
             };
 
-            fs.writeFileSync('./roleMessage.json', JSON.stringify(roleMessageData, null, 2));
+            const filePath = path.join(__dirname, '..', 'roleMessage.json');
+            fs.writeFileSync(filePath, JSON.stringify(roleMessageData, null, 2));
 
             await interaction.reply({ content: 'Message de rôle créé et sauvegardé.', ephemeral: true });
 
@@ -37,5 +39,5 @@ module.exports = {
             console.error('Erreur lors de la création du message des rôles :', error);
             await interaction.reply({ content: "Une erreur s'est produite lors de la création du message des rôles.", ephemeral: true });
         }
-    }
+    },
 };

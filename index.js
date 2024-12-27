@@ -22,8 +22,8 @@ const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(fil
 
 for (const file of commandFiles) {
     const command = require(path.join(__dirname, 'commands', file));
-    client.commands.set(command.data.name, command);  
-    commands.push(command.data.toJSON()); 
+    client.commands.set(command.data.name, command);
+    commands.push(command.data.toJSON());
     console.log(`Command loaded: ${command.data.name}`);
 }
 
@@ -34,7 +34,7 @@ const rest = new REST({ version: '10' }).setToken(config.token);
         console.log('Started refreshing application (/) commands.');
 
         await rest.put(
-            Routes.applicationGuildCommands(clientId, guildId), 
+            Routes.applicationGuildCommands(clientId, guildId),
             { body: commands }
         );
 
@@ -65,7 +65,7 @@ client.on('interactionCreate', async interaction => {
     const command = client.commands.get(interaction.commandName);
     if (!command) {
         console.error(`Command not found: ${interaction.commandName}`);
-        return; 
+        return;
     }
 
     try {
@@ -162,10 +162,12 @@ client.on('messageDelete', async message => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    if (user.bot) return; 
+    if (user.bot) return;
 
     try {
-        const roleMessageData = JSON.parse(fs.readFileSync('./roleMessage.json', 'utf-8'));
+        const filePath = path.join(__dirname, 'roleMessage.json');
+        const roleMessageData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
         if (reaction.message.id !== roleMessageData.messageId) return;
 
         const guild = reaction.message.guild;
@@ -190,11 +192,13 @@ client.on('messageReactionRemove', async (reaction, user) => {
     if (user.bot) return;
 
     try {
-        const roleMessageData = JSON.parse(fs.readFileSync('./roleMessage.json', 'utf-8'));
+        const filePath = path.join(__dirname, 'roleMessage.json');
+        const roleMessageData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
         if (reaction.message.id !== roleMessageData.messageId) return;
 
         const guild = reaction.message.guild;
-        const member = await guild.members.fetch(user.id); 
+        const member = await guild.members.fetch(user.id);
         const roleName = roleMessageData.roles[reaction.emoji.name];
 
         if (roleName) {
@@ -210,5 +214,6 @@ client.on('messageReactionRemove', async (reaction, user) => {
         console.error('Erreur lors du retrait du rôle :', error);
     }
 });
+
 
 client.login(config.token);
