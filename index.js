@@ -99,6 +99,22 @@ client.on('interactionCreate', async interaction => {
                     await interaction.reply({ content: 'Rôle Graphiste attribué.', ephemeral: true });
                 }
             }
+
+            if (interaction.customId === 'verify_member') {
+                const memberRole = interaction.guild.roles.cache.get(config.memberRoleId);
+        
+                if (!memberRole) {
+                    return interaction.reply({ content: "Le rôle Membre n'existe pas ou est mal configuré.", ephemeral: true });
+                }
+        
+                try {
+                    await interaction.member.roles.add(memberRole);
+                    await interaction.reply({ content: "Vous avez été vérifié et avez maintenant accès au serveur !", ephemeral: true });
+                } catch (error) {
+                    console.error('Erreur lors de l\'ajout du rôle Membre :', error);
+                    await interaction.reply({ content: "Une erreur s'est produite lors de la vérification. Veuillez réessayer plus tard.", ephemeral: true });
+                }
+            }
         } catch (error) {
             console.error('Erreur lors de l\'interaction avec les boutons :', error);
             await interaction.reply({ content: "Une erreur s'est produite lors du traitement de votre demande.", ephemeral: true });
