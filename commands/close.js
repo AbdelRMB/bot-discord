@@ -18,7 +18,7 @@ module.exports = {
                 return;
             }
 
-            const logChannel = message.guild.channels.cache.get(config.logChannelId);
+            const logChannel = interaction.guild.channels.cache.get(config.logChannelId);
 
             if (logChannel) {
                 await logChannel.send(`Le salon ${channel.name} a été supprimé par ${interaction.user.tag}.`);
