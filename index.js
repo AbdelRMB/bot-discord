@@ -161,4 +161,50 @@ client.on('messageDelete', async message => {
     }
 });
 
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (user.bot) return;
+
+    try {
+        const roleMessageData = JSON.parse(fs.readFileSync('./roleMessage.json', 'utf-8'));
+        if (reaction.message.id !== roleMessageData.messageId) return;
+
+        const guild = reaction.message.guild;
+        const member = guild.members.cache.get(user.id);
+        const roleName = roleMessageData.roles[reaction.emoji.name];
+
+        if (roleName) {
+            const role = guild.roles.cache.find(r => r.name === roleName);
+            if (role) {
+                await member.roles.add(role);
+                console.log(`Ajouté le rôle ${roleName} à ${user.tag}`);
+            }
+        }
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout du rôle :', error);
+    }
+});
+
+client.on('messageReactionRemove', async (reaction, user) => {
+    if (user.bot) return;
+
+    try {
+        const roleMessageData = JSON.parse(fs.readFileSync('./roleMessage.json', 'utf-8'));
+        if (reaction.message.id !== roleMessageData.messageId) return;
+
+        const guild = reaction.message.guild;
+        const member = guild.members.cache.get(user.id);
+        const roleName = roleMessageData.roles[reaction.emoji.name];
+
+        if (roleName) {
+            const role = guild.roles.cache.find(r => r.name === roleName);
+            if (role) {
+                await member.roles.remove(role);
+                console.log(`Retiré le rôle ${roleName} de ${user.tag}`);
+            }
+        }
+    } catch (error) {
+        console.error('Erreur lors du retrait du rôle :', error);
+    }
+});
+
 client.login(config.token);
