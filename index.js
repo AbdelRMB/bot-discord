@@ -60,25 +60,54 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return;
+    if (interaction.isCommand()) {
+        const command = client.commands.get(interaction.commandName);
+        if (!command) return;
 
-    const command = client.commands.get(interaction.commandName);
-    if (!command) {
-        console.error(`Command not found: ${interaction.commandName}`);
-        return;
-    }
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(`Error executing the command ${interaction.commandName}:`, error);
+            await interaction.reply({ content: 'An error occurred while executing this command.', ephemeral: true });
+        }
+    } else if (interaction.isButton()) {
+        try {
+            const { guild, member } = interaction;
 
-    try {
-        await command.execute(interaction);
-    } catch (error) {
-        console.error(`Error executing the command ${interaction.commandName}:`, error);
-        await interaction.reply({ content: 'An error occurred while executing this command.', ephemeral: true });
+            if (interaction.customId === 'developer_role') {
+                const role = guild.roles.cache.get(config.developerRoleId);
+                if (!role) return interaction.reply({ content: "Le rôle Développeur n'existe pas.", ephemeral: true });
+
+                if (member.roles.cache.has(role.id)) {
+                    await member.roles.remove(role);
+                    await interaction.reply({ content: 'Rôle Développeur retiré.', ephemeral: true });
+                } else {
+                    await member.roles.add(role);
+                    await interaction.reply({ content: 'Rôle Développeur attribué.', ephemeral: true });
+                }
+            }
+
+            if (interaction.customId === 'designer_role') {
+                const role = guild.roles.cache.get(config.designerRoleId);
+                if (!role) return interaction.reply({ content: "Le rôle Graphiste n'existe pas.", ephemeral: true });
+
+                if (member.roles.cache.has(role.id)) {
+                    await member.roles.remove(role);
+                    await interaction.reply({ content: 'Rôle Graphiste retiré.', ephemeral: true });
+                } else {
+                    await member.roles.add(role);
+                    await interaction.reply({ content: 'Rôle Graphiste attribué.', ephemeral: true });
+                }
+            }
+        } catch (error) {
+            console.error('Erreur lors de l\'interaction avec les boutons :', error);
+            await interaction.reply({ content: "Une erreur s'est produite lors du traitement de votre demande.", ephemeral: true });
+        }
     }
 });
 
 client.on('guildMemberAdd', async member => {
     try {
-        // Welcome message
         const welcomeChannel = member.guild.channels.cache.get(config.welcomeChannelId);
         if (welcomeChannel) {
             const welcomeEmbed = new EmbedBuilder()
@@ -92,7 +121,6 @@ client.on('guildMemberAdd', async member => {
             await welcomeChannel.send({ embeds: [welcomeEmbed] });
         }
 
-        // Logs message
         const logChannel = member.guild.channels.cache.get(config.logJoinLeaveChannelId);
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
@@ -160,60 +188,5 @@ client.on('messageDelete', async message => {
         console.error('Error logging deleted message:', error);
     }
 });
-
-client.on('messageReactionAdd', async (reaction, user) => {
-    if (user.bot) return;
-
-    try {
-        const filePath = path.join(__dirname, 'roleMessage.json');
-        const roleMessageData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-
-        if (reaction.message.id !== roleMessageData.messageId) return;
-
-        const guild = reaction.message.guild;
-        const member = await guild.members.fetch(user.id);
-        const roleName = roleMessageData.roles[reaction.emoji.name];
-
-        if (roleName) {
-            const role = guild.roles.cache.find(r => r.name === roleName);
-            if (role) {
-                await member.roles.add(role);
-                console.log(`Ajouté le rôle ${roleName} à ${user.tag}`);
-            } else {
-                console.error(`Le rôle ${roleName} n'existe pas dans ce serveur.`);
-            }
-        }
-    } catch (error) {
-        console.error('Erreur lors de l\'ajout du rôle :', error);
-    }
-});
-
-client.on('messageReactionRemove', async (reaction, user) => {
-    if (user.bot) return;
-
-    try {
-        const filePath = path.join(__dirname, 'roleMessage.json');
-        const roleMessageData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-
-        if (reaction.message.id !== roleMessageData.messageId) return;
-
-        const guild = reaction.message.guild;
-        const member = await guild.members.fetch(user.id);
-        const roleName = roleMessageData.roles[reaction.emoji.name];
-
-        if (roleName) {
-            const role = guild.roles.cache.find(r => r.name === roleName);
-            if (role) {
-                await member.roles.remove(role);
-                console.log(`Retiré le rôle ${roleName} de ${user.tag}`);
-            } else {
-                console.error(`Le rôle ${roleName} n'existe pas dans ce serveur.`);
-            }
-        }
-    } catch (error) {
-        console.error('Erreur lors du retrait du rôle :', error);
-    }
-});
-
 
 client.login(config.token);

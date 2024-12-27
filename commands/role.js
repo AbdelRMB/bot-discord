@@ -1,40 +1,37 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const config = require('../config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('role')
-        .setDescription('Créer un message pour les rôles avec des réactions')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setDescription('Créer un message pour les rôles avec des boutons'),
     async execute(interaction) {
         try {
             const roleEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
                 .setTitle('Choisis ton rôle !')
                 .setDescription(
-                    'Réagis avec les emojis suivants pour obtenir un rôle :\n' +
+                    'Clique sur un bouton ci-dessous pour obtenir le rôle correspondant :\n' +
                     '🛠️ - Développeur\n' +
                     '🎨 - Graphiste'
                 );
 
-            const message = await interaction.channel.send({ embeds: [roleEmbed] });
+            // Créer les boutons
+            const buttons = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('developer_role')
+                        .setLabel('Développeur')
+                        .setStyle(ButtonStyle.Primary)
+                        .setEmoji('🛠️'),
+                    new ButtonBuilder()
+                        .setCustomId('designer_role')
+                        .setLabel('Graphiste')
+                        .setStyle(ButtonStyle.Success)
+                        .setEmoji('🎨')
+                );
 
-            const roleMessageData = {
-                messageId: message.id,
-                roles: {
-                    '🛠️': 'Développeur',
-                    '🎨': 'Graphiste',
-                },
-            };
-
-            const filePath = path.join(__dirname, '..', 'roleMessage.json');
-            fs.writeFileSync(filePath, JSON.stringify(roleMessageData, null, 2));
-
-            await interaction.reply({ content: 'Message de rôle créé et sauvegardé.', ephemeral: true });
-
-            await message.react('🛠️');
-            await message.react('🎨');
+            await interaction.reply({ embeds: [roleEmbed], components: [buttons] });
         } catch (error) {
             console.error('Erreur lors de la création du message des rôles :', error);
             await interaction.reply({ content: "Une erreur s'est produite lors de la création du message des rôles.", ephemeral: true });
