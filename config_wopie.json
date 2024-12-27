@@ -5,5 +5,7 @@
     "welcomeChannelId": "your-welcome-channel-id",
     "logJoinLeaveChannelId": "your-log-join-channel-id",
     "logChannelId": "your-log-channel-id",
-    "logMessageChannelId": "your-log-message-channel-id"
+    "logMessageChannelId": "your-log-message-channel-id",
+    "developerRoleId": "your-developper-role-id",
+    "designerRoleId": "your-designer-role-id"
 }
