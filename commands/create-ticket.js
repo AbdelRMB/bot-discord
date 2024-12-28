@@ -17,7 +17,7 @@ module.exports = {
             const ticketdevEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
                 .setTitle('Ticket client')
-                .setDescription('Choisissez le service demander');
+                .setDescription('Choisissez le service demander afin de pouvoir être bien redirigé et obtenir une réponse rapide.');
 
             const ticketdevButtons = new ActionRowBuilder()
                 .addComponents(
@@ -38,7 +38,7 @@ module.exports = {
             const ticketbugEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
                 .setTitle('Ticket Support')
-                .setDescription('Ouvrir un ticket Support.');
+                .setDescription('Ouvrir un ticket Support aifn de pouvoir être mis en relation avec un expert du Support.');
 
             const ticketbugButtons = new ActionRowBuilder()
                 .addComponents(
