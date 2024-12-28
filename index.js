@@ -201,6 +201,92 @@ client.on('interactionCreate', async interaction => {
                 await ticketChannel.send({ embeds: [ticketEmbed] });
                 await interaction.reply({ content: 'Ticket ouvert pour le service de développement d\'applications.', ephemeral: true });
             }
+
+            if (interaction.customId === 'ticket_dev_discord') {
+                const guild = interaction.guild;
+
+                let ticketCategory = guild.channels.cache.find(c => c.name === "Ticket Dev" && c.type === ChannelType.GuildCategory);
+
+                if (!ticketCategory) {
+                    ticketCategory = await guild.channels.create({
+                        name: 'Ticket Dev',
+                        type: ChannelType.GuildCategory,
+                    });
+                }
+
+                const ticketChannelName = `ticketDevDiscord-${interaction.user.username}`;
+                const ticketChannel = await guild.channels.create({
+                    name: ticketChannelName,
+                    type: ChannelType.GuildText,
+                    parent: ticketCategory.id,
+                    permissionOverwrites: [
+                        {
+                            id: guild.id,
+                            deny: ['ViewChannel'],
+                        },
+                        {
+                            id: interaction.user.id,
+                            allow: ['ViewChannel', 'SendMessages', 'ReadMessageHistory'],
+                        },
+                        {
+                            id: guild.roles.everyone,
+                            deny: ['ViewChannel']
+                        }
+                    ]
+                });
+
+                const ticketEmbed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('Ticket client')
+                    .setDescription('Vous avez ouvert un ticket pour le service de développement Discord. Un membre de notre équipe vous contactera bientôt.');
+
+                await ticketChannel.send({ content: `${interaction.user}` });
+                await ticketChannel.send({ embeds: [ticketEmbed] });
+                await interaction.reply({ content: 'Ticket ouvert pour le service de développement Discord.', ephemeral: true });
+            }
+
+            if (interaction.customId === 'ticket_bug') {
+                const guild = interaction.guild;
+
+                let ticketCategory = guild.channels.cache.find(c => c.name === "Ticket Support" && c.type === ChannelType.GuildCategory);
+
+                if (!ticketCategory) {
+                    ticketCategory = await guild.channels.create({
+                        name: 'Ticket Support',
+                        type: ChannelType.GuildCategory,
+                    });
+                }
+
+                const ticketChannelName = `ticketSupport-${interaction.user.username}`;
+                const ticketChannel = await guild.channels.create({
+                    name: ticketChannelName,
+                    type: ChannelType.GuildText,
+                    parent: ticketCategory.id,
+                    permissionOverwrites: [
+                        {
+                            id: guild.id,
+                            deny: ['ViewChannel'],
+                        },
+                        {
+                            id: interaction.user.id,
+                            allow: ['ViewChannel', 'SendMessages', 'ReadMessageHistory'],
+                        },
+                        {
+                            id: guild.roles.everyone,
+                            deny: ['ViewChannel']
+                        }
+                    ]
+                });
+
+                const ticketEmbed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('Ticket client')
+                    .setDescription('Vous avez ouvert un ticket pour le service de support. Un membre de notre équipe vous contactera bientôt.');
+
+                await ticketChannel.send({ content: `${interaction.user}` });
+                await ticketChannel.send({ embeds: [ticketEmbed] });
+                await interaction.reply({ content: 'Ticket ouvert pour le service de support.', ephemeral: true });
+            }
         } catch (error) {
             console.error('Erreur lors de l\'interaction avec les boutons :', error);
             await interaction.reply({ content: "Une erreur s'est produite lors du traitement de votre demande.", ephemeral: true });
