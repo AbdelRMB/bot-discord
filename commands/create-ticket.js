@@ -7,11 +7,10 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         try{
-            const channel = interaction.options.getChannel('channel');
 
             const ticketdevEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
-                .setTitle('Ticket client')
+                .setTitle('Ticket Service')
                 .setDescription('Choisissez le service demander');
     
             const ticketdevButtons = new ActionRowBuilder()
@@ -29,69 +28,9 @@ module.exports = {
                 );
     
             await interaction.reply({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
-    
-            // const ticketbugEmbed = new EmbedBuilder()
-            //     .setColor(0x00FF00)
-            //     .setTitle('Ticket Support')
-            //     .setDescription('Ouvrir un ticket Support.');
-    
-            // const ticketbugButtons = new ActionRowBuilder()
-            //     .addComponents(
-            //         new ButtonBuilder()
-            //             .setCustomId('ticket_bug')
-            //             .setLabel('Signaler un bug')
-            //             .setStyle(ButtonStyle.Danger)
-            //             .setEmoji(':technologist:')
-            //     );
-    
-            // await channel.send({ embeds: [ticketbugEmbed], components: [ticketbugButtons] });
         } catch (error) { 
             console.error('Error while creating ticket:', error);
             await interaction.reply({ content: 'An error occurred while creating the ticket.', ephemeral: true });
         }
-        
-
-
-        // const ticketCategoryName = 'Tickets'; 
-
-        // let category = interaction.guild.channels.cache.find(
-        //     c => c.name === ticketCategoryName && c.type === 4 
-        // );
-
-        // if (!category) {
-        //     category = await interaction.guild.channels.create({
-        //         name: ticketCategoryName,
-        //         type: 4,
-        //     });
-        // }
-
-        // const ticketChannel = await interaction.guild.channels.create({
-        //     name: `ticket-${interaction.user.username}`,
-        //     type: 0, 
-        //     parent: category.id, 
-        //     permissionOverwrites: [
-        //         {
-        //             id: interaction.guild.id, 
-        //             deny: [PermissionFlagsBits.ViewChannel], 
-        //         },
-        //         {
-        //             id: interaction.user.id, 
-        //             allow: [
-        //                 PermissionFlagsBits.ViewChannel,
-        //                 PermissionFlagsBits.SendMessages,
-        //                 PermissionFlagsBits.ReadMessageHistory,
-        //             ],
-        //         },
-        //     ],
-        // });
-
-        // await ticketChannel.send({
-        //     content: `Bonjour ${interaction.user}, un membre de l'équipe vous répondra bientôt. Merci de préciser votre demande !`,
-        // });
-
-        // await interaction.reply({
-        //     content: `Votre ticket a été créé : ${ticketChannel}`,
-        //     ephemeral: true,
-        // });
     },
 };
