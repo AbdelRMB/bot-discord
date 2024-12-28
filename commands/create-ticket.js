@@ -24,7 +24,7 @@ module.exports = {
                     new ButtonBuilder()
                         .setCustomId('ticket_dev_web')
                         .setLabel('Developpement Web')
-                        .setStyle(ButtonStyle.Primary)
+                        .setStyle(ButtonStyle.Secondary)
                         .setEmoji('🛠️'),
                     new ButtonBuilder()
                         .setCustomId('ticket_dev_app')
@@ -44,7 +44,7 @@ module.exports = {
                 .addComponents(
                     new ButtonBuilder()
                         .setCustomId('ticket_bug')
-                        .setLabel('Signaler un bug')
+                        .setLabel('Ouvrir un ticket Support')
                         .setStyle(ButtonStyle.Danger)
                         .setEmoji('👨‍💻')  
                 );
