@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, REST, Routes, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, REST, Routes, EmbedBuilder, userMention } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config.json');
@@ -114,6 +114,20 @@ client.on('interactionCreate', async interaction => {
                     console.error('Erreur lors de l\'ajout du rôle Membre :', error);
                     await interaction.reply({ content: "Une erreur s'est produite lors de la vérification. Veuillez réessayer plus tard.", ephemeral: true });
                 }
+            }
+
+            if (interaction.customId === 'ticket_dev_web') {
+                const ticketChannel = guild.channels.cache.get(config.ticketChannelId);
+                if (!ticketChannel) return interaction.reply({ content: "Le salon de ticket n'existe pas ou est mal configuré.", ephemeral: true });
+
+                const ticketEmbed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('Ticket client')
+                    .setDescription('Vous avez ouvert un ticket pour le service de développement Web. Un membre de notre équipe vous contactera bientôt.');
+
+                await ticketChannel.send({ embeds: [ticketEmbed] });
+                await ticketChannel.send({ content: `${userMention}` });
+                await interaction.reply({ content: 'Ticket ouvert pour le service de développement Web.', ephemeral: true });
             }
         } catch (error) {
             console.error('Erreur lors de l\'interaction avec les boutons :', error);
