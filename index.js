@@ -155,7 +155,7 @@ client.on('interactionCreate', async interaction => {
                     .setDescription('Vous avez ouvert un ticket pour le service de développement Web. Un membre de notre équipe vous contactera bientôt.');
 
                 await ticketChannel.send({ embeds: [ticketEmbed] });
-                await ticketChannel.send({ content: `${userMention}` });
+                await ticketChannel.send({ content: `${interaction.user}` });
                 await interaction.reply({ content: 'Ticket ouvert pour le service de développement Web.', ephemeral: true });
             }
         } catch (error) {
