@@ -158,6 +158,49 @@ client.on('interactionCreate', async interaction => {
                 await ticketChannel.send({ embeds: [ticketEmbed] });
                 await interaction.reply({ content: 'Ticket ouvert pour le service de développement Web.', ephemeral: true });
             }
+
+            if (interaction.customId === 'ticket_dev_app') {
+                const guild = interaction.guild;
+
+                let ticketCategory = guild.channels.cache.find(c => c.name === "Ticket Dev" && c.type === ChannelType.GuildCategory);
+
+                if (!ticketCategory) {
+                    ticketCategory = await guild.channels.create({
+                        name: 'Ticket Dev',
+                        type: ChannelType.GuildCategory,
+                    });
+                }
+
+                const ticketChannelName = `ticketDev-${interaction.user.username}`;
+                const ticketChannel = await guild.channels.create({
+                    name: ticketChannelName,
+                    type: ChannelType.GuildText,
+                    parent: ticketCategory.id,
+                    permissionOverwrites: [
+                        {
+                            id: guild.id,
+                            deny: ['ViewChannel'],
+                        },
+                        {
+                            id: interaction.user.id,
+                            allow: ['ViewChannel', 'SendMessages', 'ReadMessageHistory'],
+                        },
+                        {
+                            id: guild.roles.everyone,
+                            deny: ['ViewChannel']
+                        }
+                    ]
+                });
+
+                const ticketEmbed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('Ticket client')
+                    .setDescription('Vous avez ouvert un ticket pour le service de développement d\'applications. Un membre de notre équipe vous contactera bientôt.');
+
+                await ticketChannel.send({ content: `${interaction.user}` });
+                await ticketChannel.send({ embeds: [ticketEmbed] });
+                await interaction.reply({ content: 'Ticket ouvert pour le service de développement d\'applications.', ephemeral: true });
+            }
         } catch (error) {
             console.error('Erreur lors de l\'interaction avec les boutons :', error);
             await interaction.reply({ content: "Une erreur s'est produite lors du traitement de votre demande.", ephemeral: true });
