@@ -28,7 +28,7 @@ module.exports = {
                         .setEmoji(':calling:')
                 );
     
-            await channel.send({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
+            // await channel.send({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
     
             const ticketbugEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
