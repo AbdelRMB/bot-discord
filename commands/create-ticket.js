@@ -30,7 +30,12 @@ module.exports = {
                         .setCustomId('ticket_dev_app')
                         .setLabel('Developpement Application')
                         .setStyle(ButtonStyle.Secondary)
-                        .setEmoji('📲') 
+                        .setEmoji('📲'),
+                    new ButtonBuilder()
+                        .setCustomId('ticket_dev_discord')
+                        .setLabel('Developpement Discord')
+                        .setStyle(ButtonStyle.Secondary)
+                        .setEmoji('🛠️')
                 );
 
             await channel.send({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
@@ -46,7 +51,7 @@ module.exports = {
                         .setCustomId('ticket_bug')
                         .setLabel('Ouvrir un ticket Support')
                         .setStyle(ButtonStyle.Danger)
-                        .setEmoji('👨‍💻')  
+                        .setEmoji('👨‍💻')
                 );
 
             await channel.send({ embeds: [ticketbugEmbed], components: [ticketbugButtons] });
