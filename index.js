@@ -128,7 +128,7 @@ client.on('interactionCreate', async interaction => {
                     });
                 }
 
-                const ticketChannelName = `ticketDev-${interaction.user.username}`;
+                const ticketChannelName = `ticketDevWeb-${interaction.user.username}`;
                 const ticketChannel = await guild.channels.create({
                     name: ticketChannelName,
                     type: ChannelType.GuildText,
