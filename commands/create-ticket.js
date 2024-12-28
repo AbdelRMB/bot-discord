@@ -28,25 +28,23 @@ module.exports = {
                         .setEmoji(':calling:')
                 );
     
-            // await channel.send({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
+            await interaction.reply({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
     
-            const ticketbugEmbed = new EmbedBuilder()
-                .setColor(0x00FF00)
-                .setTitle('Ticket Support')
-                .setDescription('Ouvrir un ticket Support.');
+            // const ticketbugEmbed = new EmbedBuilder()
+            //     .setColor(0x00FF00)
+            //     .setTitle('Ticket Support')
+            //     .setDescription('Ouvrir un ticket Support.');
     
-            const ticketbugButtons = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                        .setCustomId('ticket_bug')
-                        .setLabel('Signaler un bug')
-                        .setStyle(ButtonStyle.Danger)
-                        .setEmoji(':technologist:')
-                );
+            // const ticketbugButtons = new ActionRowBuilder()
+            //     .addComponents(
+            //         new ButtonBuilder()
+            //             .setCustomId('ticket_bug')
+            //             .setLabel('Signaler un bug')
+            //             .setStyle(ButtonStyle.Danger)
+            //             .setEmoji(':technologist:')
+            //     );
     
-            await channel.send({ embeds: [ticketbugEmbed], components: [ticketbugButtons] });
-    
-            await interaction.reply({ content: 'Panels créer !', ephemeral: true });
+            // await channel.send({ embeds: [ticketbugEmbed], components: [ticketbugButtons] });
         } catch (error) { 
             console.error('Error while creating ticket:', error);
             await interaction.reply({ content: 'An error occurred while creating the ticket.', ephemeral: true });
