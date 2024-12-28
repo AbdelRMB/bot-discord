@@ -1,9 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('create-ticket')
-        .setDescription('Crée un système de tickets pour gérer les demandes utilisateurs'),
+        .setDescription('Crée un système de tickets pour gérer les demandes utilisateurs')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
 
         const ticketdevEmbed = new EmbedBuilder()
