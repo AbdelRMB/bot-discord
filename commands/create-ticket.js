@@ -7,7 +7,8 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         try {
-            const channel = interaction.options.getChannel('channel');
+            const channel = interaction.options.getChannel('channel') || interaction.channel;
+
             if (!channel || channel.type !== ChannelType.GuildText) {
                 await interaction.reply({ content: 'The specified channel is not a text channel.', ephemeral: true });
                 return;
