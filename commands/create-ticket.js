@@ -8,8 +8,8 @@ module.exports = {
     async execute(interaction) {
         try {
             const channel = interaction.options.getChannel('channel');
-            if (!channel.isTextBased()) {
-                await interaction.reply({ content: 'The specified channel is not text-based.', ephemeral: true });
+            if (!channel || channel.type !== ChannelType.GuildText) {
+                await interaction.reply({ content: 'The specified channel is not a text channel.', ephemeral: true });
                 return;
             }
 
