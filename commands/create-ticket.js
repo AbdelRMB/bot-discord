@@ -6,6 +6,7 @@ module.exports = {
         .setDescription('Crée un système de tickets pour gérer les demandes utilisateurs')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
+        const channel = interaction.options.getChannel('channel');
 
         const ticketdevEmbed = new EmbedBuilder()
             .setColor(0x00FF00)
@@ -26,7 +27,7 @@ module.exports = {
                     .setEmoji(':calling:')
             );
 
-        await interaction.reply({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
+        await channel.send({ embeds: [ticketdevEmbed], components: [ticketdevButtons] });
 
         const ticketbugEmbed = new EmbedBuilder()
             .setColor(0x00FF00)
@@ -42,7 +43,9 @@ module.exports = {
                     .setEmoji(':technologist:')
             );
 
-        await interaction.reply({ embeds: [ticketbugEmbed], components: [ticketbugButtons] });
+        await channel.send({ embeds: [ticketbugEmbed], components: [ticketbugButtons] });
+
+        await interaction.reply({ content: 'Panels créer !', ephemeral: true });
 
 
         // const ticketCategoryName = 'Tickets'; 
