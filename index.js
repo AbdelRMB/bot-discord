@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, REST, Routes, EmbedBuilder, userMention } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, REST, Routes, EmbedBuilder, userMention, ChannelType } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config.json');
@@ -102,11 +102,11 @@ client.on('interactionCreate', async interaction => {
 
             if (interaction.customId === 'verify_member') {
                 const memberRole = interaction.guild.roles.cache.get(config.memberRoleId);
-        
+
                 if (!memberRole) {
                     return interaction.reply({ content: "Le rôle Membre n'existe pas ou est mal configuré.", ephemeral: true });
                 }
-        
+
                 try {
                     await interaction.member.roles.add(memberRole);
                     await interaction.reply({ content: "Vous avez été vérifié et avez maintenant accès au serveur !", ephemeral: true });
@@ -117,8 +117,37 @@ client.on('interactionCreate', async interaction => {
             }
 
             if (interaction.customId === 'ticket_dev_web') {
-                const ticketChannel = guild.channels.cache.get(config.ticketChannelId);
-                if (!ticketChannel) return interaction.reply({ content: "Le salon de ticket n'existe pas ou est mal configuré.", ephemeral: true });
+                const guild = interaction.guild;
+
+                let ticketCategory = guild.channels.cache.find(c => c.name === "Ticket Dev" && c.type === ChannelType.GuildCategory);
+
+                if (!ticketCategory) {
+                    ticketCategory = await guild.channels.create({
+                        name: 'Ticket Dev',
+                        type: ChannelType.GuildCategory,
+                    });
+                }
+
+                const ticketChannelName = `ticketDev-${interaction.user.username}`;
+                const ticketChannel = await guild.channels.create({
+                    name: ticketChannelName,
+                    type: ChannelType.GuildText,
+                    parent: ticketCategory.id,
+                    permissionOverwrites: [
+                        {
+                            id: guild.id,
+                            deny: ['ViewChannel'],
+                        },
+                        {
+                            id: interaction.user.id,
+                            allow: ['ViewChannel', 'SendMessages', 'ReadMessageHistory'],
+                        },
+                        {
+                            id: guild.roles.everyone,
+                            deny: ['ViewChannel']
+                        }
+                    ]
+                });
 
                 const ticketEmbed = new EmbedBuilder()
                     .setColor(0x00FF00)
